@@ -51,10 +51,11 @@ public class Studen_signin extends Fragment {
         signin.setOnClickListener(view -> {
             String userEmail = Email.getText().toString();
             String userPassword = Password.getText().toString();
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("Plz Wait");
+            progressDialog.show();
             mAuth.signInWithEmailAndPassword(userEmail, userPassword).addOnSuccessListener(getActivity(), authResult -> {
-                progressDialog = new ProgressDialog(getContext());
-                progressDialog.setMessage("Plz Wait");
-                progressDialog.show();
+
                 Intent intent = new Intent(getActivity(), UserActivity.class);
                 startActivity(intent);
                 progressDialog.dismiss();
