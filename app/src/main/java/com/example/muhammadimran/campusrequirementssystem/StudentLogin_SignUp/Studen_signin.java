@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,6 +52,11 @@ public class Studen_signin extends Fragment {
         signin.setOnClickListener(view -> {
             String userEmail = Email.getText().toString();
             String userPassword = Password.getText().toString();
+            if (TextUtils.isEmpty(userEmail)) {
+                Email.setError("Required");
+            } else if (TextUtils.isEmpty(userPassword)) {
+                Password.setError("Required");
+            }
             progressDialog = new ProgressDialog(getContext());
             progressDialog.setMessage("Plz Wait");
             progressDialog.show();

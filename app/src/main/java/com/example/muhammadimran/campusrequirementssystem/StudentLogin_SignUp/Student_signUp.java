@@ -104,20 +104,29 @@ public class Student_signUp extends Fragment {
 
                     String getCurrentKey = task.getResult().getUser().getUid();
 
-                    //firebase Database
-                    hashMap = new HashMap<>();
-                    hashMap.put("FName", Fname);
-                    hashMap.put("Lname", Lname);
-                    hashMap.put("Email", Email);
-                    hashMap.put("Password", Password);
-                    hashMap.put("CPassword", Cpassword);
-                    hashMap.put("Grade", Grade);
-                    hashMap.put("Gender", Gender);
-                    hashMap.put("Contact", Contact);
+//                    //firebase Database
+//                    hashMap = new HashMap<>();
+//                    hashMap.put("FName", Fname);
+//                    hashMap.put("Lname", Lname);
+//                    hashMap.put("Email", Email);
+//                    hashMap.put("Password", Password);
+//                    hashMap.put("CPassword", Cpassword);
+//                    hashMap.put("Grade", Grade);
+//                    hashMap.put("Gender", Gender);
+//                    hashMap.put("Contact", Contact);
+                    UserInfoModel user = new UserInfoModel(Fname, Lname, Email, Password, Cpassword, Grade, Gender, Contact);
 
-                    database.child("Student-info").child(getCurrentKey).setValue(hashMap);
+                    database.child("Student-info").child(getCurrentKey).setValue(user);
+                    fname.setText("");
+                    lname.setText("");
+                    email.setText("");
+                    password.setText("");
+                    confermpassword.setText("");
+                    grade.setText("");
+                    gender.setText("");
+                    contact.setText("");
                     progressDialog.dismiss();
-                    new Studen_signin();
+
                 }).addOnFailureListener(getActivity(), e -> {
                     Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
                     progressDialog.dismiss();
@@ -126,16 +135,6 @@ public class Student_signUp extends Fragment {
                 Toast.makeText(getActivity(), "Password Not Match!!!", Toast.LENGTH_SHORT).show();
                 progressDialog.dismiss();
             }
-
-            fname.setText("");
-            lname.setText("");
-            email.setText("");
-            password.setText("");
-            confermpassword.setText("");
-            grade.setText("");
-            gender.setText("");
-            contact.setText("");
-
 
 
         });

@@ -5,90 +5,90 @@ package com.example.muhammadimran.campusrequirementssystem.StudentLogin_SignUp;
  */
 
 public class UserInfoModel {
-    private String FName;
-    private String Lname;
-    private String Email;
-    private String Password;
-    private String CPassword;
-    private String Grade;
-    private String Gender;
-    private String Contact;
+    private String fname;
+    private String lname;
+    private String email;
+    private String password;
+    private String cPassword;
+    private String grade;
+    private String gender;
+    private String contact;
 
     public UserInfoModel() {
     }
 
-    public UserInfoModel(String FName, String lname, String email, String password, String CPassword, String grade, String gender, String contact) {
-        this.FName = FName;
-        Lname = lname;
-        Email = email;
-        Password = password;
-        this.CPassword = CPassword;
-        Grade = grade;
-        Gender = gender;
-        Contact = contact;
+    public UserInfoModel(String fname, String lname, String email, String password, String cPassword, String grade, String gender, String contact) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.password = password;
+        this.cPassword = cPassword;
+        this.grade = grade;
+        this.gender = gender;
+        this.contact = contact;
     }
 
-    public String getFName() {
-        return FName;
+    public String getFname() {
+        return fname;
     }
 
-    public void setFName(String FName) {
-        this.FName = FName;
+    public void setFname(String fname) {
+        this.fname = fname;
     }
 
     public String getLname() {
-        return Lname;
+        return lname;
     }
 
     public void setLname(String lname) {
-        Lname = lname;
+        this.lname = lname;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getPassword() {
-        return Password;
+        return password;
     }
 
     public void setPassword(String password) {
-        Password = password;
+        this.password = password;
     }
 
-    public String getCPassword() {
-        return CPassword;
+    public String getcPassword() {
+        return cPassword;
     }
 
-    public void setCPassword(String CPassword) {
-        this.CPassword = CPassword;
+    public void setcPassword(String cPassword) {
+        this.cPassword = cPassword;
     }
 
     public String getGrade() {
-        return Grade;
+        return grade;
     }
 
     public void setGrade(String grade) {
-        Grade = grade;
+        this.grade = grade;
     }
 
     public String getGender() {
-        return Gender;
+        return gender;
     }
 
     public void setGender(String gender) {
-        Gender = gender;
+        this.gender = gender;
     }
 
     public String getContact() {
-        return Contact;
+        return contact;
     }
 
     public void setContact(String contact) {
-        Contact = contact;
+        this.contact = contact;
     }
 }
