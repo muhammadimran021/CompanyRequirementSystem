@@ -38,6 +38,9 @@ public class adminFragmentViewAdapter extends FragmentStatePagerAdapter {
             case 1:
                 name = "Student User";
                 break;
+            case 2:
+                name = "Post";
+                break;
         }
         return name;
     }

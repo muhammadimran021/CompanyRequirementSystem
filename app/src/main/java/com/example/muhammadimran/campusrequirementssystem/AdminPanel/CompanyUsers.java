@@ -1,6 +1,7 @@
 package com.example.muhammadimran.campusrequirementssystem.AdminPanel;
 
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -24,10 +25,11 @@ import java.util.ArrayList;
  */
 public class CompanyUsers extends Fragment {
 
-    DatabaseReference mDatabase;
-    ArrayList<CompanyModel> companyModels = new ArrayList<>();
-    ListView comapnylist;
-    CompanyAdapter adapter;
+    private DatabaseReference mDatabase;
+    private ArrayList<CompanyModel> companyModels = new ArrayList<>();
+    private ListView comapnylist;
+    private CompanyAdapter adapter;
+    private ProgressDialog dialog;
 
     public CompanyUsers() {
         // Required empty public constructor
@@ -39,6 +41,7 @@ public class CompanyUsers extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_company_users, container, false);
+        dialog = new ProgressDialog(getActivity());
         comapnylist = (ListView) view.findViewById(R.id.ComapnyViewuser);
         adapter = new CompanyAdapter(companyModels, getContext());
         comapnylist.setAdapter(adapter);
@@ -50,12 +53,15 @@ public class CompanyUsers extends Fragment {
     }
 
     public void fetchData() {
+        dialog.setMessage("Loading...");
+        dialog.show();
         mDatabase.child("company-info").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 CompanyModel model = dataSnapshot.getValue(CompanyModel.class);
                 companyModels.add(new CompanyModel(model.getFname(), model.getLname(), model.getEmail(), model.getPassword(), model.getConfermpassword(), model.getPosition(), model.getGender(), model.getContact()));
                 adapter.notifyDataSetChanged();
+                dialog.dismiss();
             }
 
             @Override

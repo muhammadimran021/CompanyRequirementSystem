@@ -1,22 +1,21 @@
-package com.example.muhammadimran.campusrequirementssystem;
+package com.example.muhammadimran.campusrequirementssystem.AdminPanel;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.muhammadimran.campusrequirementssystem.Adapter_Company_Student.CompanyAdapter;
-import com.example.muhammadimran.campusrequirementssystem.Company_SignIn_SignUp.CompanyModel;
 import com.example.muhammadimran.campusrequirementssystem.Company_SignIn_SignUp.PostModel;
+import com.example.muhammadimran.campusrequirementssystem.R;
 import com.example.muhammadimran.campusrequirementssystem.StudentLogin_SignUp.PostAdapter;
-import com.example.muhammadimran.campusrequirementssystem.StudentLogin_SignUp.StudentLogin_signUp;
-import com.example.muhammadimran.campusrequirementssystem.StudentLogin_SignUp.UserInfoModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -27,32 +26,46 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class PostByCompany extends Fragment {
     FirebaseAuth mAuth;
     DatabaseReference firebaseDatabase;
     private ListView usersList;
     private PostAdapter adapter;
     private List<PostModel> arrayList = new ArrayList<>();
+    private ProgressDialog dialog;
+
+    public PostByCompany() {
+        // Required empty public constructor
+    }
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_post_by_company, container, false);
         firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
-        adapter = new PostAdapter(arrayList, UserActivity.this);
-        RecyclerView recList = (RecyclerView) findViewById(R.id.postrecyclerViewList);
-        recList.setHasFixedSize(true);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        recList.setLayoutManager(llm);
 
+        RecyclerView recList = (RecyclerView) view.findViewById(R.id.PostListAdminView);
+        recList.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        adapter = new PostAdapter(arrayList, getContext());
         recList.setAdapter(adapter);
+        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+        itemAnimator.setAddDuration(1000);
+        recList.setItemAnimator(itemAnimator);
+        CompanyPost();
+        return view;
+    }
 
-        //String CurrentUserId = mAuth.getCurrentUser().getUid();
-
-
+    public void CompanyPost() {
+        dialog = new ProgressDialog(getContext());
+        dialog.setMessage("Loading Posts...");
+        dialog.show();
         firebaseDatabase.child("company-post").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -60,7 +73,7 @@ public class UserActivity extends AppCompatActivity {
                 PostModel postModel = dataSnapshot.getValue(PostModel.class);
                 arrayList.add(new PostModel(postModel.getDescription(), postModel.getImageUrl()));
                 adapter.notifyDataSetChanged();
-
+                dialog.dismiss();
             }
 
             @Override
@@ -83,28 +96,6 @@ public class UserActivity extends AppCompatActivity {
 
             }
         });
-
-
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.logout, menu);
-        return true;
-
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.Adminlogout:
-                mAuth.signOut();
-
-                //finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

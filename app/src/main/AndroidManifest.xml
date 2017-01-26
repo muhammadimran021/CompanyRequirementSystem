@@ -15,10 +15,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity android:name=".StudentLogin_SignUp.StudentLogin" />
         <activity android:name=".UserActivity" />
         <activity android:name=".AdminPanel.AdminActivity" />
-        <activity android:name=".Company_SignIn_SignUp.CompanyUser"></activity>
+        <activity android:name=".Company_SignIn_SignUp.CompanyUser" />
+        <activity android:name=".Company_SignIn_SignUp.PostJobsByCompany"></activity>
     </application>
 
 </manifest>

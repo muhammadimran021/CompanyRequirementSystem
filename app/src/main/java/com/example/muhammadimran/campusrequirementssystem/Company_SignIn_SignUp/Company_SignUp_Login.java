@@ -58,8 +58,11 @@ public class Company_SignUp_Login extends Fragment {
             String email = companyEmail.getText().toString();
             String cpassword = password.getText().toString();
             mAuth.signInWithEmailAndPassword(email, cpassword).addOnSuccessListener(getActivity(), authResult -> {
+                companyEmail.setText("");
+                password.setText("");
                 Intent intent = new Intent(getContext(), CompanyUser.class);
                 startActivity(intent);
+
                 dialog.dismiss();
             });
 
