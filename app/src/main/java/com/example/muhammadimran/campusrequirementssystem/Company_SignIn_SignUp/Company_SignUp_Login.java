@@ -11,9 +11,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.muhammadimran.campusrequirementssystem.R;
+import com.example.muhammadimran.campusrequirementssystem.StudentLogin_SignUp.UserInfoModel;
+import com.example.muhammadimran.campusrequirementssystem.UserActivity;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -25,6 +33,7 @@ public class Company_SignUp_Login extends Fragment {
     private Button CompanySignIn;
     private FirebaseAuth mAuth;
     private ProgressDialog dialog;
+    DatabaseReference mdaDatabaseReference;
 
     public Company_SignUp_Login() {
         // Required empty public constructor
@@ -36,6 +45,7 @@ public class Company_SignUp_Login extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_company__sign_up__login, container, false);
+        mdaDatabaseReference = FirebaseDatabase.getInstance().getReference();
         mAuth = FirebaseAuth.getInstance();
         companyEmail = (EditText) view.findViewById(R.id.Company_Email);
         password = (EditText) view.findViewById(R.id.Company_Password);
@@ -58,13 +68,37 @@ public class Company_SignUp_Login extends Fragment {
             String email = companyEmail.getText().toString();
             String cpassword = password.getText().toString();
             mAuth.signInWithEmailAndPassword(email, cpassword).addOnSuccessListener(getActivity(), authResult -> {
-                companyEmail.setText("");
-                password.setText("");
-                Intent intent = new Intent(getContext(), CompanyUser.class);
-                startActivity(intent);
 
-                dialog.dismiss();
-            });
+                String userid = authResult.getUser().getUid();
+                mdaDatabaseReference.child("company-info").child(userid).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        CompanyModel userinfo = dataSnapshot.getValue(CompanyModel.class);
+                        if (userinfo != null) {
+                            companyEmail.setText("");
+                            password.setText("");
+                            Intent intent = new Intent(getContext(), CompanyUser.class);
+                            startActivity(intent);
+
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(getActivity(), "Sorry Account Not Match", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Toast.makeText(getActivity(), databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
+
+            }).addOnFailureListener(runnable -> {
+                        Toast.makeText(getActivity(), runnable.getMessage(), Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+            );
 
         });
     }

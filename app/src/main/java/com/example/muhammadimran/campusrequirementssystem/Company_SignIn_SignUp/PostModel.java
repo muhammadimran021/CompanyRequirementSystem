@@ -5,15 +5,25 @@ package com.example.muhammadimran.campusrequirementssystem.Company_SignIn_SignUp
  */
 
 public class PostModel {
+    private String name;
     private String description;
     private String imageUrl;
 
     public PostModel() {
     }
 
-    public PostModel(String description, String imageUrl) {
+    public PostModel(String name, String description, String imageUrl) {
+        this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {

@@ -58,7 +58,7 @@ public class UserActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("TAG", dataSnapshot.getValue().toString());
                 PostModel postModel = dataSnapshot.getValue(PostModel.class);
-                arrayList.add(new PostModel(postModel.getDescription(), postModel.getImageUrl()));
+                arrayList.add(postModel);
                 adapter.notifyDataSetChanged();
 
             }
@@ -102,7 +102,7 @@ public class UserActivity extends AppCompatActivity {
             case R.id.Adminlogout:
                 mAuth.signOut();
 
-                //finish();
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);

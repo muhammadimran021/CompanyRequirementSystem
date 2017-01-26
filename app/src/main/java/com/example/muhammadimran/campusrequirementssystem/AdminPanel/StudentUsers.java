@@ -52,7 +52,7 @@ public class StudentUsers extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 UserInfoModel users = dataSnapshot.getValue(UserInfoModel.class);
-                arrayList.add(new UserInfoModel(users.getFname(), users.getLname(), users.getEmail(), users.getPassword(), users.getcPassword(), users.getGrade(), users.getGender(), users.getContact()));
+                arrayList.add(users);
                 adapter.notifyDataSetChanged();
             }
 

@@ -39,7 +39,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
         PostModel post = postModelList.get(position);
-        holder.description.setText(post.getDescription());
+        holder.name.setText("Post By: " + post.getName());
+        holder.description.setText("Description: " + post.getDescription());
         Glide.with(context).load(post.getImageUrl()).into(holder.image);
 
     }
@@ -50,16 +51,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public class PostViewHolder extends RecyclerView.ViewHolder {
+        private TextView name;
         private TextView description;
         private ImageView image;
 
         public PostViewHolder(View view) {
             super(view);
+            name = (TextView) view.findViewById(R.id.CurrentUserName);
             description = (TextView) view.findViewById(R.id.PostDescription);
             image = (ImageView) view.findViewById(R.id.PostImage);
         }
     }
-
 
 
 }

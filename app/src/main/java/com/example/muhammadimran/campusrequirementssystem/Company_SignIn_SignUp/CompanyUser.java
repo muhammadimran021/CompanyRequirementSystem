@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -75,8 +77,7 @@ public class CompanyUser extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 UserInfoModel users = dataSnapshot.getValue(UserInfoModel.class);
-                arrayList.add(new UserInfoModel(users.getFname(), users.getLname(), users.getEmail(),
-                        users.getPassword(), users.getcPassword(), users.getGrade(), users.getGender(), users.getContact()));
+                arrayList.add(users);
                 adapter.notifyDataSetChanged();
             }
 

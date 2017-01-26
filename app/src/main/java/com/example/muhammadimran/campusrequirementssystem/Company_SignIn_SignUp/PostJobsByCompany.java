@@ -6,14 +6,19 @@ import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.example.muhammadimran.campusrequirementssystem.R;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -21,16 +26,16 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class PostJobsByCompany extends AppCompatActivity {
-    ImageButton postImage;
-    EditText description;
-    Button Post;
+    private ImageButton postImage;
+    private EditText description;
+    private Button Post;
     private Uri mImageUri = null;
     private static final int Gallery_Request = 1;
-
     private ProgressDialog mprogress;
-
     private StorageReference mStoarge;
     private DatabaseReference mData;
+    private Uri FirebaseUri;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +47,7 @@ public class PostJobsByCompany extends AppCompatActivity {
 
         mStoarge = FirebaseStorage.getInstance().getReference();
         mData = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
 
         postImage.setOnClickListener(view -> {
             Intent galleryIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -67,11 +73,27 @@ public class PostJobsByCompany extends AppCompatActivity {
 
             StorageReference filepath = mStoarge.child("Images").child(mImageUri.getLastPathSegment());
             filepath.putFile(mImageUri).addOnSuccessListener(taskSnapshot -> {
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                PostModel post = new PostModel(desc_value, downloadUrl.toString());
-                mData.child("company-post").push().setValue(post);
-                finish();
-                mprogress.dismiss();
+
+                FirebaseUri = taskSnapshot.getDownloadUrl();
+
+                String UId = mAuth.getCurrentUser().getUid().toString();
+                mData.child("company-info").child(UId).child("fname").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("TAG", dataSnapshot.getValue().toString());
+                        String currentusername = dataSnapshot.getValue().toString();
+                        PostModel post = new PostModel(currentusername,desc_value, FirebaseUri.toString());
+                        mData.child("company-post").push().setValue(post);
+                        finish();
+                        mprogress.dismiss();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
 
             });

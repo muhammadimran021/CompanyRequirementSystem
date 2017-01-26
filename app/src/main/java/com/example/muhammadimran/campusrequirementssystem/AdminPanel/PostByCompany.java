@@ -35,7 +35,7 @@ public class PostByCompany extends Fragment {
     private ListView usersList;
     private PostAdapter adapter;
     private List<PostModel> arrayList = new ArrayList<>();
-    private ProgressDialog dialog;
+
 
     public PostByCompany() {
         // Required empty public constructor
@@ -63,17 +63,15 @@ public class PostByCompany extends Fragment {
     }
 
     public void CompanyPost() {
-        dialog = new ProgressDialog(getContext());
-        dialog.setMessage("Loading Posts...");
-        dialog.show();
+
         firebaseDatabase.child("company-post").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Log.d("TAG", dataSnapshot.getValue().toString());
                 PostModel postModel = dataSnapshot.getValue(PostModel.class);
-                arrayList.add(new PostModel(postModel.getDescription(), postModel.getImageUrl()));
+                arrayList.add(postModel);
                 adapter.notifyDataSetChanged();
-                dialog.dismiss();
+
             }
 
             @Override

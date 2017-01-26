@@ -59,7 +59,7 @@ public class CompanyUsers extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 CompanyModel model = dataSnapshot.getValue(CompanyModel.class);
-                companyModels.add(new CompanyModel(model.getFname(), model.getLname(), model.getEmail(), model.getPassword(), model.getConfermpassword(), model.getPosition(), model.getGender(), model.getContact()));
+                companyModels.add(model);
                 adapter.notifyDataSetChanged();
                 dialog.dismiss();
             }
@@ -86,4 +86,8 @@ public class CompanyUsers extends Fragment {
         });
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
 }
