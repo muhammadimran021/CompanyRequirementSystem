@@ -126,6 +126,7 @@ public class Student_signUp extends Fragment {
                     gender.setText("");
                     contact.setText("");
                     progressDialog.dismiss();
+                    getFragmentManager().beginTransaction().add(R.id.mainframe, new Studen_signin()).commit();
 
                 }).addOnFailureListener(getActivity(), e -> {
                     Toast.makeText(getActivity(), "Login Failed", Toast.LENGTH_SHORT).show();
